@@ -3,6 +3,10 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Styles from "./signUp.css";
+import Navbar from "../Navbar/navbar";
+import ChatList from "../ChatList/chatList";
+import { BrowserRouter as Router } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -11,6 +15,7 @@ class SignUp extends React.Component {
     showMainPage(false);
     this.state = {
       showSignUpPage: true,
+      showChatList: false,
       inputFisrtName: "",
       inputLastName: "",
       inputEmail: "",
@@ -48,6 +53,11 @@ class SignUp extends React.Component {
 
   updatePasswordInputValue = (value) => {
     this.setState({ inputPassword: value });
+  };
+
+  showAvaliableChats = () => {
+    this.setState({ showChatList: true });
+    this.toggleRender(false);
   };
 
   signUpVerification = (e) => {
@@ -120,6 +130,11 @@ class SignUp extends React.Component {
                 : "",
             },
             () => {
+              this.updateFirstNameInputValue("");
+              this.updateLastNameInputValue("");
+              this.updateEmailInputValue("");
+              this.updateUserNameInputValue("");
+              this.updatePasswordInputValue("");
               this.showAvaliableChats();
             }
           );
@@ -142,7 +157,7 @@ class SignUp extends React.Component {
   };
 
   render() {
-    const { showSignUpPage } = this.state;
+    const { showSignUpPage, showChatList } = this.state;
     if (showSignUpPage) {
       return (
         <div>
@@ -230,6 +245,13 @@ class SignUp extends React.Component {
               <Col xs={{ order: "last" }}></Col>
             </Row>
           </Container>
+        </div>
+      );
+    }
+    if (showChatList) {
+      return (
+        <div>
+          <ChatList showLastPage={this.toggleRender} data={this.state} />
         </div>
       );
     } else {

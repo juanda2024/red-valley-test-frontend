@@ -3,12 +3,15 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./login.css";
+import ChatList from "../ChatList/chatList";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showLoginPage: true,
+      showChatList: false,
       inputEmail: "",
       inputPassword: "",
       logedUsertoken: "",
@@ -33,7 +36,10 @@ class Login extends React.Component {
     this.setState({ inputPassword: value });
   };
 
-  showAvaliableChats = () => {};
+  showAvaliableChats = () => {
+    this.setState({ showChatList: true });
+    this.toggleRender(false);
+  };
 
   loginVerification = (e) => {
     const { inputEmail, inputPassword } = this.state;
@@ -93,6 +99,8 @@ class Login extends React.Component {
                 : "",
             },
             () => {
+              this.updateEmailInputValue("");
+              this.updatePasswordInputValue("");
               this.showAvaliableChats();
             }
           );
@@ -112,12 +120,10 @@ class Login extends React.Component {
           //Show general error message
         }
       });
-    this.updateEmailInputValue("");
-    this.updatePasswordInputValue("");
   };
 
   render() {
-    const { showLoginPage } = this.state;
+    const { showLoginPage, showChatList } = this.state;
     if (showLoginPage) {
       return (
         <div>
@@ -171,6 +177,13 @@ class Login extends React.Component {
               <Col xs={{ order: "last" }}></Col>
             </Row>
           </Container>
+        </div>
+      );
+    }
+    if (showChatList) {
+      return (
+        <div>
+          <ChatList showLastPage={this.toggleRender} data={this.state} />
         </div>
       );
     } else {
